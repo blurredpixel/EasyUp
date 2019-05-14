@@ -46,6 +46,7 @@ def register():
         u.set_password(request.form['password'])
         db.session.add(u)
         db.session.commit()
+    else:
     return render_template('register.html')
 
 @app.route('/login',methods=['GET','POST'])
@@ -67,6 +68,7 @@ def upload():
     if(request.method=='POST'):
         filename = fileuploads.save(request.form['fileupload'])
         url = fileuploads.url(filename)
+        print('FileURL: {}'.format(url))
         newfile=File(url=url,fileid=Misc.genfileid())
         db.session.add(newfile)
         db.session.commit()
