@@ -2,9 +2,9 @@ from flask import Flask, flash, request, redirect, url_for,render_template,sessi
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import os
 app = Flask(__name__)
-
+app.secret_key=os.urandom(12)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
 app.config['UPLOADS_DEFAULT_DEST'] = '/uploads'
@@ -26,7 +26,7 @@ class File(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String)
-    password=db.Column(db.Text)
+    password_hash=db.Column(db.Text)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -39,6 +39,10 @@ class User(db.Model):
 def index():
     return render_template('index.html')
 
+@app.route('/file/<username>')
+def file(username):
+    return render_template('file.html',username=username)
+
 @app.route('/register',methods=['GET','POST'])
 def register():
     if request.method == 'POST':
@@ -46,6 +50,7 @@ def register():
         u.set_password(request.form['password'])
         db.session.add(u)
         db.session.commit()
+        return redirect('/login')
     else:
         return render_template('register.html')
 
@@ -53,12 +58,15 @@ def register():
 def login():
     if request.method == 'POST':
        u = User.query.filter_by(username=request.form['username']).first()
+       print(request.form['username'])
+       print(request.form['password'])
+       print(u)
        if u.check_password(request.form['password']):
            session['username']=u.username
            url = 'file'+str(u.username)
-           redirect(url)
+           return redirect(url)
        else:
-           render_template('login.html')
+           return render_template('login.html')
     return render_template('login.html')
 
 
