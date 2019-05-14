@@ -47,7 +47,7 @@ def register():
         db.session.add(u)
         db.session.commit()
     else:
-    return render_template('register.html')
+        return render_template('register.html')
 
 @app.route('/login',methods=['GET','POST'])
 def login():
