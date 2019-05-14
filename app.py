@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, url_for,render_template
+from flask import Flask, flash, request, redirect, url_for,render_template,session
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -33,6 +33,8 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -45,6 +47,20 @@ def register():
         db.session.add(u)
         db.session.commit()
     return render_template('register.html')
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+       u = User.query.filter_by(username=request.form['username']).first()
+       if u.check_password(request.form['password']):
+           session['username']=u.username
+           url = 'file'+u.username
+           redirect(url)
+       else:
+           render_template('login.html')
+    return render_template('login.html')
+
+
 
 @app.route('/upload',methods=["GET",'POST'])
 def upload():
