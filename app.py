@@ -55,7 +55,7 @@ def login():
        u = User.query.filter_by(username=request.form['username']).first()
        if u.check_password(request.form['password']):
            session['username']=u.username
-           url = 'file'+u.username
+           url = 'file'+str(u.username)
            redirect(url)
        else:
            render_template('login.html')
