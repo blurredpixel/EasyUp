@@ -43,7 +43,9 @@ def index():
 
 @app.route('/file/<userid>')
 def file(userid):
-    if userid == session['userid']:
+    print('userid: {}'.format(userid))
+    print('sessionuserid: {}'.format(session['username']))
+    if(str(userid) == str(session['username'])):
         files=File.query.filter_by(user_id=User.query.filter_by(username=session['username']).first().id).all()
     
         return render_template('file.html',username=session['username'],files=files)
@@ -70,7 +72,7 @@ def login():
        session['userid']=u.id
      
        if u.check_password(request.form['password']):
-           session['username']=u.username
+           session['username']=request.form['username']
            url = 'file/'+str(u.username)
            return redirect(url)
        else:
