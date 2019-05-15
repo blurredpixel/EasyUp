@@ -76,6 +76,7 @@ def login():
            url = 'file/'+str(u.username)
            return redirect(url)
        else:
+           flash('Login issue',category="error")
            return render_template('login.html')
     return render_template('login.html')
 
