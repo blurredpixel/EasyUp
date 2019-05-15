@@ -40,11 +40,11 @@ class User(db.Model):
 def index():
     return render_template('index.html')
 
-@app.route('/file/<username>')
-def file(username):
-    files=File.query.filter_by(user_id=session['userid']).all()
+@app.route('/file/<fileid>')
+def file(fileid):
+    files=File.query.filter_by(fileid=fileid).all()
     
-    return render_template('file.html',username=username,files=files)
+    return render_template('file.html',username=session['username'],files=files)
 
 @app.route('/register',methods=['GET','POST'])
 def register():
@@ -84,10 +84,12 @@ def upload():
         print(filename)
         url = fileuploads.url(filename)
         print('FileURL: {}'.format(url))
-        newfile=File(url=url,fileid=Misc().randint,user_id=session['userid'])
+        fileid=Misc().randint
+        session['fileid']=fileid
+        newfile=File(url=url,fileid=fileid,user_id=session['userid'])
         db.session.add(newfile)
         db.session.commit()
-        url = 'file/'+session['username']
+        url = 'file/'+fileid
         return redirect(url)
         
     else:
