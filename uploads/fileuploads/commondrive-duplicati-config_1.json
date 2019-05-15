@@ -1,0 +1,65 @@
+{
+  "CreatedByVersion": "2.0.4.12",
+  "Schedule": {
+    "ID": 1,
+    "Tags": [
+      "ID=1"
+    ],
+    "Time": "0001-01-01T05:00:00Z",
+    "Repeat": "1D",
+    "LastRun": "0001-01-01T05:00:00Z",
+    "Rule": "AllowedWeekDays=Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday",
+    "AllowedDays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri",
+      "sat",
+      "sun"
+    ]
+  },
+  "Backup": {
+    "ID": "1",
+    "Name": "commondrive",
+    "Description": "",
+    "Tags": [],
+    "TargetURL": "s3://greenfiber-backups/?s3-server-name=s3.amazonaws.com&s3-location-constraint=&s3-storage-class=&auth-username=AKIAJNUNRP3WMGLHWHZQ&auth-password=ZSasy9AuPvCX%2FTdjpL6vN0gvNw5gOKEAx5NTMAOt",
+    "DBPath": "C:\\Users\\administrator.THERMOCELL\\AppData\\Local\\Duplicati\\67857875717389856586.sqlite",
+    "Sources": [
+      "\\\\TCI-DC1\\d$\\ThermocellShares\\"
+    ],
+    "Settings": [
+      {
+        "Filter": "",
+        "Name": "encryption-module",
+        "Value": "aes",
+        "Argument": null
+      },
+      {
+        "Filter": "",
+        "Name": "compression-module",
+        "Value": "zip",
+        "Argument": null
+      },
+      {
+        "Filter": "",
+        "Name": "dblock-size",
+        "Value": "75MB",
+        "Argument": null
+      },
+      {
+        "Filter": "",
+        "Name": "passphrase",
+        "Value": "Hmp9dX%3YtDq%JHo.",
+        "Argument": null
+      }
+    ],
+    "Filters": [],
+    "Metadata": {},
+    "IsTemporary": false
+  },
+  "DisplayNames": {
+    "\\\\TCI-DC1\\d$\\ThermocellShares\\": "ThermocellShares"
+  }
+}
