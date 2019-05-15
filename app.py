@@ -22,6 +22,7 @@ class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url=db.Column(db.String)
     fileid=db.Column(db.Text)
+    filename=db.Column(db.String)
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'))
     
 class User(db.Model):
@@ -86,7 +87,7 @@ def upload():
         print('FileURL: {}'.format(url))
         fileid=Misc().randint
         session['fileid']=fileid
-        newfile=File(url=url,fileid=fileid,user_id=session['userid'])
+        newfile=File(filename=filename,url=url,fileid=fileid,user_id=session['userid'])
         db.session.add(newfile)
         db.session.commit()
         url = 'file/'+fileid
