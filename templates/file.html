@@ -26,11 +26,12 @@
                 <th>Size</th>
             </tr>
         </thead>
-        <tbody>
         {% for file in files %}
+        <tbody>
+        
         <tr>
                 <td scope="row">{{ file.filename }}</td>
-                <td>{{ file.url }}</td>
+                <td><a href="{{ file.url }}">{{file.url}}</a></td>
                 <td>{{ file.size }}</td>
             </tr>
         {% endfor %}
