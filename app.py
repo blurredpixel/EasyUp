@@ -41,9 +41,9 @@ class User(db.Model):
 def index():
     return render_template('index.html')
 
-@app.route('/file/<fileid>')
-def file(fileid):
-    files=File.query.filter_by(fileid=fileid).all()
+@app.route('/file/<userid>')
+def file(userid):
+    files=File.query.filter_by(user_id=User.query.filter_by(username=session['username']).first().id).all()
     
     return render_template('file.html',username=session['username'],files=files)
 
@@ -87,10 +87,11 @@ def upload():
         print('FileURL: {}'.format(url))
         fileid=Misc().randint
         session['fileid']=fileid
+
         newfile=File(filename=filename,url=url,fileid=fileid,user_id=session['userid'])
         db.session.add(newfile)
         db.session.commit()
-        url = 'file/'+fileid
+        url = 'file/'+str(session['username'])
         return redirect(url)
         
     else:
