@@ -43,9 +43,12 @@ def index():
 
 @app.route('/file/<userid>')
 def file(userid):
-    files=File.query.filter_by(user_id=User.query.filter_by(username=session['username']).first().id).all()
+    if userid == session['userid']:
+        files=File.query.filter_by(user_id=User.query.filter_by(username=session['username']).first().id).all()
     
-    return render_template('file.html',username=session['username'],files=files)
+        return render_template('file.html',username=session['username'],files=files)
+    else:
+        return redirect('/')
 
 @app.route('/register',methods=['GET','POST'])
 def register():
@@ -65,9 +68,7 @@ def login():
     if request.method == 'POST':
        u = User.query.filter_by(username=request.form['username']).first()
        session['userid']=u.id
-       print(request.form['username'])
-       print(request.form['password'])
-       print(u)
+     
        if u.check_password(request.form['password']):
            session['username']=u.username
            url = 'file/'+str(u.username)
@@ -85,15 +86,15 @@ def upload():
         print(filename)
         url = fileuploads.url(filename)
         print('FileURL: {}'.format(url))
-        fileid=Misc().randint
+        fileid=Misc().randint #generates random fileid
         session['fileid']=fileid
 
-        u = User.query.filter_by(username=session['username']).first()
+        u = User.query.filter_by(username=session['username']).first() #generates user object
         
         newfile=File(filename=filename,url=url,fileid=fileid,user_id=session['userid'])
-        u.files.append(newfile)
-        db.session.add(newfile)
-        db.session.commit()
+        u.files.append(newfile) #append new upload file to user modeel of files
+        db.session.add(newfile) #add the file to db transactions
+        db.session.commit() #commit the transaction
         url = 'file/'+str(session['username'])
         return redirect(url)
         
