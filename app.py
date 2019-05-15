@@ -88,7 +88,10 @@ def upload():
         fileid=Misc().randint
         session['fileid']=fileid
 
+        u = User.query.filter_by(username=session['username']).first()
+        
         newfile=File(filename=filename,url=url,fileid=fileid,user_id=session['userid'])
+        u.files.append(newfile)
         db.session.add(newfile)
         db.session.commit()
         url = 'file/'+str(session['username'])
